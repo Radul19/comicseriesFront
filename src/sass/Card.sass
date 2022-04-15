@@ -1,0 +1,64 @@
+@use 'var' as v
+
+.cap_card
+    height: 70px
+    flex-direction: row
+    margin: 10px 0px
+    padding: 0px 20px 0px 10px
+
+    &_left
+        flex: 4
+        flex-direction: row
+        align-items: center
+        padding: 0px 20px 0px 0px
+        &_image
+            width: 70px
+            height: 70px
+            border-radius: 10px
+        &_text
+            margin-left: 20px
+            width: 60%
+            color: #eee
+    &_right
+        flex-direction: row-reverse
+        justify-content: space-between
+        align-items: center
+        flex: 2
+
+.comment_input
+    height: 50px
+    width: 80%
+    margin-top: 20px
+    align-self: center
+    padding: 5px 10px
+
+.input
+    width: 100%
+    height: 40px
+
+/* COMENT ITEM*/
+
+.comment
+    &_general
+        margin-bottom: 50px
+        flex-direction: row
+    &_left
+        flex: 1
+        align-items: center
+        &_image
+            width: 50px
+            height: 50px
+            border-radius: 50px
+
+    &_right
+        flex: 3
+    &_upperText
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        flex: 3
+        width: 90%
+    &_bottomText
+        margin-top: 10px
+        flex: 5
+        width: 90%

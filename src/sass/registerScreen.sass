@@ -1,0 +1,75 @@
+@use 'var' as v
+.container
+    position: relative
+    flex: 1
+    flex-direction: column
+    &_box
+        flex: 2
+
+.content
+    display: flex
+    flex: 5
+
+.input
+    width: 60%
+    height: 35px
+    align-self: center
+    background: v.$third
+    border-radius: 15px
+    justify-content: center
+    padding: 0px 15px
+    margin-top: 20px
+    color: #eee
+
+.registerBtn
+    height: 50px
+
+    align-self: center
+    align-items: center
+    justify-content: center
+    width: 60%
+    margin-top: 50px
+    background-color: v.$primary
+    border: 2px solid v.$four
+    box-sizing: border-box
+    border-radius: 10px
+
+.text
+    margin-top: 40px
+    align-self: center
+    color: #c4c4c4
+
+    &_orange
+        color: v.$five
+        align-self: center
+
+.admin_code_container
+    // background-color: #cd4444
+    flex-direction: row
+    align-items: center
+    width: 60%
+    justify-content: space-between
+    align-self: center
+    align-items: center
+    margin-top: 20px
+
+    &_input
+        color: #eee
+        width: 60%
+        height: 35px
+        align-self: center
+        background: v.$third
+        border-radius: 15px
+        justify-content: center
+        padding: 0px 15px
+        text-align: center
+
+.admin_btn
+    z-index: 200
+    position: absolute
+    width: 60px
+    height: 60px
+    flex-direction: row
+    top: 0px
+    right: 0px
+    align-items: center

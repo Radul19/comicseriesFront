@@ -1,0 +1,200 @@
+@use 'var' as v
+.g_container
+    flex: 1
+    background-color: v.$secondary
+
+.top_bar
+    flex-direction: row
+    justify-content: space-between
+    margin-top: 5px
+    margin-bottom: 40px
+    padding: 5%
+
+    &_right
+        width: 30%
+        justify-content: space-between
+        flex-direction: row-reverse
+
+.scrollContainer
+    display: flex
+    flex: 1
+
+.title
+    align-self: center
+    text-align: center
+    font-size: 24px
+    margin: 0px 0px 30px
+    color: #eee
+
+.description
+    align-self: center
+    margin: 30px 0px 40px
+    width: 80%
+    text-align: center
+    line-height: 20px
+    color: #eee
+
+.image
+    align-self: center
+    width: 200px
+    height: 260px
+
+.image2
+    // background-color: #123
+    width: 100%
+    height: 100%
+    border-radius: 10px
+
+.space
+    height: 10px
+
+.top_scrollbar
+    display: flex
+    background-color: v.$third
+    &_title
+        display: flex
+        flex-direction: row
+
+        width: 100%
+        &_box
+            background-color: v.$secondary
+            width: 100%
+            flex-direction: row
+            justify-content: space-between
+            &_left
+                background-color: v.$primary
+                width: 45%
+                height: 40px
+                border-radius: 0px 10px 0px 0px
+                align-items: center
+                justify-content: center
+            &_right
+                align-items: center
+                justify-content: center
+                border-radius: 10px 0px 0px 0px
+                height: 40px
+                width: 45%
+                background-color: v.$third
+
+.cap_container
+    background-color: v.$primary
+    padding-top: 20px
+.comments_container
+    background-color: v.$third
+    padding-top: 40px
+
+.comment_input
+    // background-color: #20527b
+    flex-direction: row
+    padding: 0px 20px
+    justify-content: space-between
+    align-items: center
+    margin-top: 10px
+
+.input
+    height: 40px
+    width: 85%
+    // flex: 5
+    align-self: center
+    color: #eee
+    // background-color: #6d311e
+.btnComment
+    width: 15%
+    // flex: 1
+    // justify-content: center
+    // align-items: center
+    background-color: #8c26a5ee
+
+.modal
+    width: 250px
+    height: 250px
+    background-color: #191919
+    align-self: center
+    border-radius: 10px
+    // justify-content: center
+    padding: 20px
+    &_top
+        flex: 3
+        // background-color: #123
+        align-items: center
+        justify-content: center
+    &_bottom
+        // background-color: #2769ac
+        flex: 1
+        flex-direction: row
+        align-items: center
+        justify-content: space-between
+    &_btn
+        // background-color: #123
+        width: 90px
+        height: 40px
+        align-items: center
+        justify-content: center
+        border-radius: 5px
+        &_primary
+            background-color: v.$primary
+            border: 1px solid v.$four
+
+    &_text
+        color: #eee
+        text-align: center
+        font-size: 16px
+
+    &_container
+        justify-content: center
+        background-color: #0000007d
+        flex: 1
+
+.modalComment
+    width: 300px
+    height: 250px
+    background-color: #191919
+    align-self: center
+    border-radius: 10px
+    // justify-content: center
+    padding: 20px
+    &_top
+        flex: 4
+        // background-color: #123
+        align-items: center
+        justify-content: center
+    &_middle
+        // background-color: #2769ac
+        flex: 3
+        flex-direction: row
+        align-items: center
+        justify-content: space-between
+    &_bottom
+        margin-top: 20px
+        flex: 2
+        // background-color: #2769ac
+        flex-direction: row
+        align-items: center
+        &_line
+            border: 1px solid v.$primary
+    &_btn
+        // background-color: #123
+        width: 33%
+        height: 40px
+        align-items: center
+        justify-content: center
+        border-radius: 5px
+        &_primary
+            background-color: v.$primary
+            border: 1px solid v.$four
+
+    &_text
+        color: #eee
+        text-align: center
+        font-size: 16px
+
+    &_container
+        justify-content: center
+        background-color: #0000007d
+        flex: 1
+
+    &_input
+        // height: 16px
+        padding: 5px 10px
+        color: #eee
+        width: 90%

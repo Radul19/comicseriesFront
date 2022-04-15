@@ -10,6 +10,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "js",
+        "jsx",
+        "scss",
+        "sass"
+      ]
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -23,7 +32,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.radulito19.comicseries"
     },
     "web": {
       "favicon": "./assets/favicon.png"

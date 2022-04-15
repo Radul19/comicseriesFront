@@ -1,0 +1,65 @@
+@use 'var' as v
+.g_container
+    flex: 1
+    padding: 5% 5%
+    background-color: v.$secondary
+    width: 100%
+
+.top_bar
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    &_user
+        // width: 150px
+        flex-direction: row
+        align-items: center
+        // background-color: #c29e2a
+        justify-content: space-between
+        &_text
+            color: #eee
+            margin-left: 20px
+            font-size: 16px
+            // background-color: #eee
+
+.image
+    border-radius: 100px
+    width: 50px
+    height: 50px
+
+.notifyIcon
+    align-self: center
+
+.search_bar
+    width: 300px
+    height: 40px
+    align-self: center
+    margin-top: 40px
+    background-color: v.$third
+    border-radius: 20px
+    padding: 0px 15px
+    color: #eee
+
+.result_text
+    margin-top: 20px
+    left: 20px
+    color: #eeeeeedc
+
+.resultContainer
+    flex: 1
+    display: flex
+
+.resultCard
+    margin-top: 30px
+    // border-radius: 10px
+    &_image
+        border-radius: 10px
+        width: 140px
+        height: 180px
+        align-self: center
+
+    &_text
+        align-self: center
+        margin-top: 10px
+        margin-bottom: 20px
+
+.blankSpace

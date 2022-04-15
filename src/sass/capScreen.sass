@@ -1,0 +1,48 @@
+@use 'var' as v
+
+.g_container
+    flex: 1
+    background-color: #1D1D1D
+
+.top_bar
+    background-color: v.$secondary
+    flex-direction: row
+    flex: 1
+    &_left
+        flex: 2
+        align-self: center
+        padding: 20px
+    &_center
+        flex: 3
+        justify-content: center
+        align-items: center
+    &_right
+        flex: 3
+        flex-direction: row
+        justify-content: space-evenly
+        align-items: center
+
+.content
+    // margin: 50px 0px 25px
+    flex: 7
+    background-color: #123
+    &_image
+        height: 100%
+        width: 100%
+
+.bottom_bar
+    flex: 1
+    flex-direction: row
+    &_left
+        flex: 1
+        justify-content: center
+        align-items: center
+        transform: rotate(180deg)
+    &_center
+        flex: 2
+        justify-content: center
+        align-items: center
+    &_right
+        flex: 1
+        justify-content: center
+        align-items: center

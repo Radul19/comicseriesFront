@@ -1,0 +1,41 @@
+@use 'var' as v
+
+.g_container
+    flex: 1
+    padding: 5%
+    background-color: v.$secondary
+    width: 100%
+
+.top
+    flex: 1
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    &_text
+        font-size: 20px
+        color: #eee
+.notify
+    &_container
+        flex: 12
+    &_card
+        flex-direction: row
+        height: 90px
+        width: 100%
+        margin-bottom: 30px
+        align-self: center
+        border-radius: 10px
+        &_image
+            height: 90px
+            width: 90px
+            border-radius: 10px
+
+.text_container
+    padding: 10px
+    flex: 1
+    justify-content: space-evenly
+    &_date
+        text-align: right
+        color: #eee
+    &_text
+        color: #eee
+        font-size: 16px

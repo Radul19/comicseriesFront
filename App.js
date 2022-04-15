@@ -1,20 +1,75 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from './src/screens/LoginScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SearchScreen from './src/screens/SearchScreen';
+import NotificationScreen from './src/screens/NotificationScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
+import SerieScreen from './src/screens/SerieScreen';
+import CapScreen from './src/screens/CapScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import AddCapScreen from './src/screens/AddCapScreen';
+import AddSerieScreen from './src/screens/AddSerieScreen';
+import ImageSelectorScreen from './src/screens/ImageSelectorScreen';
+
+/// Importamos el context
+import { Context } from './src/controllers/context';
+import { Msg } from './src/components/Msg';
+
+
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+  const [msg, setMsg] = useState({
+    text: 'Error',
+    display: false,
+    type: true,
+  })
+
+  const [user, setUser] = useState({
+    username: '',
+    email: '',
+    admin: false,
+    id: '',
+    profile_pic: ''
+  })
+
+  const [load, setLoad] = useState(false)
+
+  return (
+    <Context.Provider value={{
+      msg,
+      setMsg,
+      user,
+      setUser,
+      load,
+      setLoad
+    }} >
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+
+
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="Notify" component={NotificationScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Serie" component={SerieScreen} />
+          <Stack.Screen name="Cap" component={CapScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="AddCap" component={AddCapScreen} />
+          <Stack.Screen name="AddSerie" component={AddSerieScreen} />
+          <Stack.Screen name="ImageSelector" component={ImageSelectorScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Context.Provider>
+  )
+}
