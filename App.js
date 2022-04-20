@@ -15,21 +15,24 @@ import ImageSelectorScreen from './src/screens/ImageSelectorScreen';
 
 /// Importamos el context
 import { Context } from './src/controllers/context';
-import { Msg } from './src/components/Msg';
 
-
-
+// Stack de ReactNavigation
 const Stack = createNativeStackNavigator();
 
+// Aplicacion Principal
 export default function App() {
 
-
+  // Estado para administrar los mensajes
+  // - text = texto
+  // - display = si se muestra o no el mensaje
+  // - type = Si es true un ganchito verde, si es false X roja
   const [msg, setMsg] = useState({
     text: 'Error',
     display: false,
     type: true,
   })
 
+  // Estado con los datos del usuario 
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -38,9 +41,14 @@ export default function App() {
     profile_pic: ''
   })
 
+  // Estado para mostrar o no la pantalla de carga
   const [load, setLoad] = useState(false)
 
+
   return (
+
+    // En Context.Provider value= se envian todos los datos que se quieren acceder del context
+    // En este caso se envian todos, y pueden ser accedidos en cualquier pantalla si se llama al hook useContext(Context)  src/controller/context.jsx
     <Context.Provider value={{
       msg,
       setMsg,
@@ -51,15 +59,14 @@ export default function App() {
     }} >
       <NavigationContainer>
         <Stack.Navigator
+          // Eliminar la abarra de estado del tlf (bateria,señal, notificaciones...)
           screenOptions={{
             headerShown: false
           }}
         >
-          {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
-
-
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          {/* Se elimino la pantalla de notificaciones por falta de tiempo */}
           <Stack.Screen name="Notify" component={NotificationScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Serie" component={SerieScreen} />

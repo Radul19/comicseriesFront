@@ -36,10 +36,14 @@ Todo se va a guardar en "response" y será retornado al componente que ejecuto l
 */
 
 
-/// Login
+/// Logear usuario mediante Get
 export const loginUser = async (data) => {
     let response
+
+    //Extrae los datos
     const { username, password } = data
+
+    // En las peticiones get() se envian los datos en el url  login/:username/:password
     await axios.get(`${url}login/${username}/${password}`)
         .then((res) => {
             response = res
@@ -50,11 +54,12 @@ export const loginUser = async (data) => {
 
 }
 
-// Register
-
+// Registrar usuario
 export const registerUser = async (data) => {
+
     let response
 
+    // En las peticiones post se envian los datos en un Object aparte del url
     await axios.post(`${url}register`, { data }).then(res => {
         response = res
     }).catch(err => {
@@ -63,15 +68,23 @@ export const registerUser = async (data) => {
     return response
 }
 
+// Añadir serie
 export const addSerie = async (data) => {
+
+    // Se extraen los datos y se envian en un FormData para poder procesar la imagen por Multer
     const { description, title, image, ownerId } = data
     let response
+    // -- Multer recibe todos los datos enviados pero se debe especificar el nombre de la variable en la que se recibiran las imagenes,
+    // -- en este caso es 'image'
     const formData = new FormData()
     formData.append('image', {
         name: image.name,
         uri: image.uri,
         type: image.type
     })
+
+    // Axios tiene problemas para  enviar FormDatas asi que se usa una basica peticion Fetch, solo que lleva mas configuracion
+    // -- Los datos tiene que ser recibidos como STRING porque si es un Object no se reconoce
     formData.append('data', JSON.stringify({ description, title, ownerId }))
     await fetch(`${url}addSerie`, {
         method: 'POST',
@@ -85,6 +98,7 @@ export const addSerie = async (data) => {
     return response
 }
 
+// Peticion Get para los perfiles de usuario
 export const getProfile = async (id) => {
     let response
     await axios.get(`${url}profile/${id}`).then(res => {
@@ -95,6 +109,7 @@ export const getProfile = async (id) => {
     return response
 }
 
+// Peticion Get para eliminar series por ID
 export const deleteSerie = async (id) => {
     let response
     await axios.get(`${url}deleteSerie/${id}`).then(res => {
@@ -105,6 +120,7 @@ export const deleteSerie = async (id) => {
     return response
 }
 
+// Peticion Get para recibir series por ID
 export const getSerie = async (id) => {
     let response
     await axios.get(`${url}getSerie/${id}`).then(res => {
@@ -115,6 +131,7 @@ export const getSerie = async (id) => {
     return response
 }
 
+// Peticion Post FormData para registrar capitulo con varias imagenes 
 export const uploadCaps = async (id, images) => {
     console.log(images)
     let response
@@ -136,6 +153,8 @@ export const uploadCaps = async (id, images) => {
     return response
 }
 
+
+// Actualizar datos del usuario mediante Post FormData
 export const updateProfile = async (data) => {
     const { picture, id, username } = data
     let response
@@ -158,8 +177,8 @@ export const updateProfile = async (data) => {
     return response
 }
 
+// Actualizar datos del usuario mediante Post FormData
 export const editSerie = async (data) => {
-    console.log(data)
     const { description, title, image, ownerId, id } = data
     let response
     const formData = new FormData()
@@ -181,6 +200,7 @@ export const editSerie = async (data) => {
     return response
 }
 
+// Peticion Get para recibir capitulo usando su ID y el index del capitulo
 export const getCap = async (id, cap) => {
     let response
     await axios.get(`${url}getCap/${id}/${cap}`).then(res => {
@@ -191,6 +211,7 @@ export const getCap = async (id, cap) => {
     return response
 }
 
+//Peticion Get para eliminar capitulo usando su ID y el index del capitulo
 export const deleteCap = async (id, cap) => {
     let response
     await axios.get(`${url}deleteCap/${id}/${cap}`).then(res => {
@@ -201,6 +222,7 @@ export const deleteCap = async (id, cap) => {
     return response
 }
 
+// Peticion Post FormData para editar capitulo
 export const editCap = async (id, images, cap) => {
     let response
     const formData = new FormData()
@@ -221,6 +243,7 @@ export const editCap = async (id, images, cap) => {
     return response
 }
 
+// Peticion post para crear comentario
 export const createComment = async (data) => {
     let response
 
@@ -234,6 +257,7 @@ export const createComment = async (data) => {
     return response
 }
 
+// Peticion post para eliminar comentario
 export const deleteComment = async (data) => {
     let response
     await axios.post(`${url}deleteComment`, data).then(res => {
@@ -243,6 +267,8 @@ export const deleteComment = async (data) => {
     })
     return response
 }
+
+// Peticion post para editar comentario
 export const editComment = async (data) => {
     let response
     await axios.post(`${url}editComment`, data).then(res => {
@@ -253,6 +279,7 @@ export const editComment = async (data) => {
     return response
 }
 
+// Peticion get para buscar series mediante el texto insertado
 export const searchSeries = async (text) => {
     let response
     await axios.get(`${url}searchSeries/${text}`).then(res => {
