@@ -3,34 +3,35 @@ import React, { useState, useContext, useEffect } from 'react'
 import styles from '../sass/profileScreen.sass';
 import manga from '../assets/manga.png'
 import profile from '../assets/Pumpkin.png'
-import cover1 from '../assets/cover1.png'
-import cover2 from '../assets/cover2.png'
-import cover3 from '../assets/cover3.png'
-import cover4 from '../assets/cover4.png'
-import thumb from '../assets/imgThumb.png'
 
-import { CapCard, SerieCard, CommentCard } from '../components/Card'
+import { SerieCard, CommentCard } from '../components/Card'
 
-import { Pencil, Gear, Plus, ArrowLeft, Door } from '../components/Icons'
+import { Plus, ArrowLeft, Door } from '../components/Icons'
 import { Context } from '../controllers/context';
-import { deleteSerie, getProfile, getSerie, updateProfile } from '../controllers/api';
+import { deleteSerie, getProfile, updateProfile } from '../controllers/api';
 import { Msg } from '../components/Msg';
 import Load from '../components/Load';
 
+// Componente Principal
 const ProfileScreen = ({ navigation, route }) => {
 
+    // Extraer datos de Context
     const { user, setUser, setMsg, setLoad } = useContext(Context)
-    // console.log(user);
 
+    // Numeros para alternar el display entre series propias, seguidas y comentarios
+    // -- No se completó la logica 
     const [num, setNum] = useState(1)
+
+    // En caso de editar los datos aqui se almacenaran dicha informacion
     const [editData, setEditData] = useState({
         username: user.username,
         picture: 'https://res.cloudinary.com/comicseries/image/upload/v1649827898/imgThumb_svogrq.png'
     })
-    const owner = true
 
+    // Datos del usuario
     const [profileData, setProfileData] = useState({
         userData: {
+            id: '',
             username: user.username,
             picture: 'https://res.cloudinary.com/comicseries/image/upload/v1649827898/imgThumb_svogrq.png',
         },
@@ -38,68 +39,7 @@ const ProfileScreen = ({ navigation, route }) => {
         follows: []
     })
 
-    const arr = [{
-        cap: 'Capitulo 1',
-        image: manga,
-    }, {
-        cap: 'Capitulo 2',
-        image: manga,
-    }, {
-        cap: 'Capitulo 3',
-        image: manga,
-    }, {
-        cap: 'Capitulo 4',
-        image: manga,
-    }
-        , {
-        cap: 'Capitulo 5',
-        image: manga,
-    }, {
-        cap: 'Capitulo 6',
-        image: manga,
-    }, {
-        cap: 'Capitulo 7',
-        image: manga,
-    }, {
-        cap: 'Capitulo 8',
-        image: manga,
-    }
-    ]
-
-    const comments = [{
-        username: 'Username',
-        profile_pic: profile,
-        text: 'Lorem ipsum dolor sit amet',
-        date: "xxx-xxx-xxx"
-    }, {
-        username: 'Username2',
-        profile_pic: profile,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        date: "xxx-xxx-xxx"
-    }, {
-        username: 'Username3',
-        profile_pic: profile,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit',
-        date: "xxx-xxx-xxx"
-    }, {
-        username: 'Username4',
-        profile_pic: profile,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna',
-        date: "xxx-xxx-xxx"
-    }, {
-        username: 'Username5',
-        profile_pic: profile,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis le',
-        date: "xxx-xxx-xxx"
-    }, {
-        username: 'Username6',
-        profile_pic: profile,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non',
-        date: "xxx-xxx-xxx"
-    },
-
-    ]
-
+    // Display para alternar entre series propias, seguidas y comentarios
     const display = () => {
         if (num === 1) {
             return (
@@ -111,7 +51,7 @@ const ProfileScreen = ({ navigation, route }) => {
         if (num === 2) {
             return (
                 // <View style={styles.items_container1} >
-                    {/* {arr.map((item) => <CapCard key={item.cap} navigation={navigation} cap={item.cap} image={item.image} color='#082032' set={setNum} valueSet={2} />)} */}
+                {/* {arr.map((item) => <CapCard key={item.cap} navigation={navigation} cap={item.cap} image={item.image} color='#082032' set={setNum} valueSet={2} />)} */ }
                 // </View>
             )
         }
@@ -124,25 +64,44 @@ const ProfileScreen = ({ navigation, route }) => {
         }
     }
 
+    // Logica de boton para editar los datos del perfil
     const btnEditProfile = async () => {
+
+        // Activar pantalla de carga
         setLoad(true)
+
+        // Peticion para actualizar datos
         const res = await updateProfile({ ...editData, id: user.id })
+
+        // Si se actualizo correctamente
         if (res.status === 200) {
+
+            // Desactiva la pantalla de carga
             setLoad(false)
-            console.log(res);
+
+            // Actualiza el username del usuario en el Context
             setUser({ ...user, username: editData.username })
-            // console.log(res.data.series)
+
+            // Actualiza los datos del usuario
             setProfileData({
                 ...profileData,
                 useData: { ...editData }
             })
+
+            // Actualiza los datos del estado para editar los datos
             setEditData({ ...editData, picture: res.data })
+
+            // Mensaje de exito
             setMsg({
                 text: 'Datos actualizados con exito!',
                 display: true,
                 type: true,
             })
+
+            // Viaja la pantalla de busqueda para reiniciar todo
             navigation.navigate('Search')
+
+            // En caso de error
         } else {
             setLoad(false)
             setMsg({
@@ -153,25 +112,36 @@ const ProfileScreen = ({ navigation, route }) => {
         }
     }
 
+
+    // useEffect al cambiar la ruta
     useEffect(() => {
+
+        // Funcion fantasma
         (async () => {
+
+            // Cargar todos los datos del usuario
             await loadAllData()
+
+            // Si se encontraron datos en el route.params
             if (typeof route.params === 'object') {
+
+                // y Uploads no esta vacio
                 if (route.params.upload !== undefined) {
-                    // console.log(route.params.upload[0].uri);
-                    console.log('wtf');
+                    // Actualiza la imagen de perfil momentaneamente (Se almacena en el estado de EDIT)
                     setEditData({ ...editData, picture: route.params.upload[0].uri })
                 }
             }
         })()
     }, [route])
 
+    // Estado para almacenar los datos de la serie a liminar
     const [modal, setModal] = useState({
         name: '',
         id: '',
         visible: false
     })
 
+    // Funcion para activar Modal
     const setModalTrue = (name, id) => {
         setModal({
             id,
@@ -180,20 +150,31 @@ const ProfileScreen = ({ navigation, route }) => {
         })
     }
 
+    // Funcion para eliminar serie
     const removeSerie = async () => {
+
+        // Se borran los datos del modal y se cierra
         setModal({
             name: '',
             id: '',
             visible: false
         })
+
+        // Peticion para eliminar serie por ID
         const res = await deleteSerie(modal.id)
+
+        // Si todo salio bien
         if (res.status === 200) {
+
+            // Mensaje de exito y carga toda la data otra vez
             setMsg({
                 text: 'Se ha eliminado la serie exitosamente!',
                 display: true,
                 type: true,
             })
             await loadAllData()
+
+            // En caso de error
         } else {
             setMsg({
                 text: 'Ha ocurrido un error al intentar eliminar la serie, porfavor intentar nuevamente.',
@@ -203,23 +184,41 @@ const ProfileScreen = ({ navigation, route }) => {
         }
     }
 
+
+    // Funcion para cargar todos los datos
     const loadAllData = async () => {
+
+        // En caso de que el route.params tenga informacion continua
         if (typeof route.params === 'object') {
+
+            // En caso de que route.params.id no este vacio
             if (route.params.id !== undefined) {
+
+                // Activa pantalla de carga
                 setLoad(true)
+
+                // Peticion fetch para buscar el perfil por ID
                 const res = await getProfile(route.params.id)
+
+                // Si todo salio bien
                 if (res.status === 200) {
+
+                    // Desactiva pantalla de carga
                     setLoad(false)
-                    console.log(res.data.userData)
+
+                    // Guarda los datos del perfil en su respectivo estado
                     setProfileData({
                         ...profileData,
                         series: res.data.series,
                         userData: res.data.userData
                     })
+                    // Guarda los datos del perfil en el estado de Edit por si se cancela la edicion de este
                     setEditData({
                         username: res.data.userData.username,
                         picture: res.data.userData.picture
                     })
+
+                    // En caso de error
                 } else {
                     setLoad(false)
                     setMsg({
@@ -232,6 +231,8 @@ const ProfileScreen = ({ navigation, route }) => {
         }
     }
 
+
+    // Funcion para navegar a la seleccion de imagenes y editar perfil
     const changeProfilePic = () => {
         navigation.navigate('ImageSelector', { amount: 1, goTo: 'Profile' })
     }
@@ -239,8 +240,12 @@ const ProfileScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.g_container} >
+
+            {/* Componentes Msg y Pantalla de carga */}
             <Msg />
             <Load />
+
+            {/* Modal para confirmar si eliminar la serie seleccionada  */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -258,6 +263,8 @@ const ProfileScreen = ({ navigation, route }) => {
                     </View>
                 </View>
             </Modal>
+
+            {/* TopBar */}
             <View style={styles.top_bar} >
                 <View style={styles.top_bar_left} >
                     <ArrowLeft />
@@ -269,9 +276,12 @@ const ProfileScreen = ({ navigation, route }) => {
                     <Door />
                 </View>
             </View>
+
+            {/* ScrollView donde esta toda la informacion del perfil, las series y los comentarios */}
             <ScrollView style={styles.scroll_container} >
                 <View style={styles.scroll_top} >
-                    {owner ? <>
+                    {/* Si el usuario loggeado es dueño del perfil o es admin */}
+                    {profileData.userData.id === user.id || user.admin ? <>
                         <TouchableOpacity onPress={changeProfilePic} >
                             <Image source={{ uri: editData.picture }} style={styles.scroll_top_profile} ></Image>
                         </TouchableOpacity>
@@ -280,13 +290,16 @@ const ProfileScreen = ({ navigation, route }) => {
                             onChangeText={(text) => { setEditData({ ...editData, username: text }) }}
                         />
                     </>
+                        // En caso de ser un visitante
                         :
                         <>
                             <Image source={{ uri: profileData.userData.picture }} style={styles.scroll_top_profile} ></Image>
                             <Text style={styles.scroll_top_username} >{user.username}</Text>
                         </>
                     }
-                    {owner && (user.username !== editData.username || editData.picture !== profileData.userData.picture) ?
+
+                    {/* Si el usuario loggeado es dueño del perfil o es admin y ninguno de los campos de edicion estan vacios, muestra los botones para editar perfil */}
+                    {profileData.userData.id === user.id || user.admin && (user.username !== editData.username || editData.picture !== profileData.userData.picture) ?
                         <View style={styles.edit_container} >
                             <TouchableOpacity style={styles.btn_edit} onPress={btnEditProfile}  ><Text style={{ color: '#eee' }}  >Editar</Text></TouchableOpacity>
                             <TouchableOpacity style={styles.btn_edit_cancel}
@@ -304,12 +317,10 @@ const ProfileScreen = ({ navigation, route }) => {
                     <View style={styles.sb_titles_container} >
                         <TouchableOpacity onPress={() => { setNum(1) }} style={[styles.sb_title,
                         { backgroundColor: num === 1 ? '#274861' : '#1e2e42' }]} ><Text style={{ color: '#eee' }} >My Series</Text></TouchableOpacity>
-                        {/* <TouchableOpacity onPress={() => { setNum(2) }} style={[styles.sb_title, { backgroundColor: '#b55829' }]} ><Text style={{ color: '#eee' }} >My Follows</Text></TouchableOpacity> */}
-                        {/* <TouchableOpacity onPress={() => { setNum(3) }} style={[styles.sb_title,
-                        { backgroundColor: num === 3 ? '#274861' : '#1e2e42' }]} ><Text style={{ color: '#eee' }} >Comments</Text></TouchableOpacity> */}
                     </View>
                     <View style={num === 2 ? styles.sb_space : styles.sb_space2} ></View>
                 </View>
+
                 {/* ITEM DISPLAY LOGIC */}
                 {display()}
             </ScrollView>

@@ -1,5 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, FlatList, Image } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
+
+// Extraer componentes
 import styles from '../sass/addCapScreen.sass';
 import { ArrowLeft } from '../components/Icons'
 import { Context } from '../controllers/context';
@@ -7,18 +9,29 @@ import { Msg } from '../components/Msg';
 import { uploadCaps, editCap } from '../controllers/api';
 import Load from '../components/Load'
 
-
+// Componente principal
 const AddCapScreen = ({ navigation, route }) => {
 
+
+    // Extraer datos del Context
     const { setMsg, setLoad } = useContext(Context)
 
+
+    // Estado para Imagenes
     const [images, setImages] = useState([])
+    // Estado para el numero del capitulo
     const [capNum, setCapNum] = useState('0')
+    // Estado para Cantidad de imagenes que tendra el capitulo
     const [amount, setAmount] = useState('3')
+    // Id de la serie
     const [id, setId] = useState('')
+    // Estado para evaluar si el cap se esta editando o no
     const [edit, setEdit] = useState(false)
 
+    // Funcion regex para solo aceptar numeros en el input de Cantidad de capitulos
     const regexNumber = /^[0-9]*$/
+
+    // funcion para cambiar la cantidad de capitulos y evaluar el Regex
     const changeAmount = (text) => {
         const num = parseInt(text)
         if (regexNumber.test(text)) {
@@ -32,6 +45,7 @@ const AddCapScreen = ({ navigation, route }) => {
         }
     }
 
+    // Funcion para ir a la pantalla de seleccion de imagenes
     const selectImages = () => {
         const num = parseInt(amount)
         if (num >= 1 && num <= 100) {
@@ -46,6 +60,7 @@ const AddCapScreen = ({ navigation, route }) => {
         }
     }
 
+    // useEffect para definir los estados dependiendo si existe o no los parametros en la ruta
     useEffect(() => {
 
         if (route.params.cap !== undefined) {
@@ -63,12 +78,26 @@ const AddCapScreen = ({ navigation, route }) => {
 
     }, [route])
 
+
+    // Boton para subir capitulos
     const btnUploadCap = async () => {
+
+        // Mientras la cantidad de imagenes no sean iguales a 0
         if (images.length > 0) {
+
+            // Activar pantalla de carga
             setLoad(true)
+
+            // Si el capitulo se esta editanto
             if (edit) {
+
+                // Peticion para editar
                 const res = await editCap(id, images, capNum)
+
+                // Si todo salio bien
                 if (res.status === 200) {
+
+                    // Desactivar pantalla de carga con mensaje y redireccionar a la serie
                     setLoad(false)
                     setMsg({
                         text: 'Capitulo editado satisfacctoriamente!',
@@ -76,6 +105,8 @@ const AddCapScreen = ({ navigation, route }) => {
                         type: true,
                     })
                     navigation.navigate('Serie', { id })
+
+                    // Caso de error
                 } else {
                     setLoad(false)
                     setMsg({
@@ -84,8 +115,14 @@ const AddCapScreen = ({ navigation, route }) => {
                         type: false,
                     })
                 }
+
+                // Si el capitulo se sube por primera vez
             } else {
+
+                // Peticion para subir cap
                 const res = await uploadCaps(id, images)
+
+                // Si todo salio bien
                 if (res.status === 200) {
                     setLoad(false)
                     setMsg({
@@ -94,6 +131,8 @@ const AddCapScreen = ({ navigation, route }) => {
                         type: true,
                     })
                     navigation.navigate('Serie', { id })
+
+                    // En caso de error
                 } else {
                     setLoad(false)
                     setMsg({
@@ -106,78 +145,15 @@ const AddCapScreen = ({ navigation, route }) => {
         }
     }
 
-    const arr = [{
-        name: 'Black Clover',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 1
-    }, {
-        name: 'Boku no Hero Academia',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 2
-    }, {
-        name: 'Dr. Stone',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 3
-    }, {
-        name: 'Jujutsu Kaisen',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 4
-    }, {
-        name: 'Black Clover',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 5
-    }, {
-        name: 'Boku no Hero Academia',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 6
-    }, {
-        name: 'Dr. Stone',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 7
-    }, {
-        name: 'Jujutsu Kaisen',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 8
-    }, {
-        name: 'Black Clover',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 9
-    }, {
-        name: 'Boku no Hero Academia',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 10
-    }, {
-        name: 'Dr. Stone',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 11
-    }, {
-        name: 'Jujutsu Kaisen',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 12
-    }, {
-        name: 'Black Clover',
-        image: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 13
-    }, {
-        name: 'Boku no Hero Academia',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 14
-    }, {
-        name: 'Dr. Stone',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 15
-    }, {
-        name: 'Jujutsu Kaisen',
-        uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540radulito19%252Fcomicseries/ImageManipulator/1e110350-e30b-4a18-8664-7e7681f04700.jpg',
-        id: 16
-    }]
-
     return (
         <View style={styles.container_g} >
+            {/* Componentes mensaje y load */}
             <Msg />
             <Load />
             <View style={styles.top_bar} >
                 <View style={styles.back}>
+
+                    {/* Componente arrowLeft para volver a la serie correspondiente del capitulo */}
                     <ArrowLeft onPress={() => {
                         setEdit(false)
                         navigation.navigate('Serie', { id })
@@ -203,16 +179,8 @@ const AddCapScreen = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/* <ScrollView style={styles.middle_content} >
-                <View style={styles.preview_container} >
-                    <View style={styles.preview_card} ></View>
-                    <View style={styles.preview_card} ></View>
-                    <View style={styles.preview_card} ></View>
-                    <View style={styles.preview_card} ></View>
-                    <View style={styles.preview_card} ></View>
-                </View>
-            </ScrollView> */}
             <View style={styles.middle_content}>
+                {/* Flatlist donde se muestran todas las imagenes seleccionadas */}
                 <FlatList
                     numColumns={4}
                     data={images}

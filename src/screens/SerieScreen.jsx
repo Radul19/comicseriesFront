@@ -298,7 +298,9 @@ const SerieScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.g_container}>
+      {/* Componentes de mensaje */}
       <Msg />
+      {/* Modal para eliminar capitulo */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -316,6 +318,8 @@ const SerieScreen = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
+
+      {/* Modal para eliminar y editar comentarios */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -334,6 +338,8 @@ const SerieScreen = ({ navigation, route }) => {
               <TouchableOpacity style={styles.modalComment_btn} onPress={pressDeleteComment} ><Text style={{ color: '#eee' }} >Eliminar</Text></TouchableOpacity>
               <TouchableOpacity style={[styles.modalComment_btn, styles.modalComment_btn_primary]} onPress={() => { setcommentModal({ ...modalCap, visible: false }) }} ><Text style={{ color: '#eee' }} >Cancelar</Text></TouchableOpacity>
             </View>
+
+            {/* Si se va a editar el comentario o no, renderiza lo siguiente */}
             {commentModal.edit ?
               <>
                 <View style={styles.modalComment_bottom} >
@@ -348,6 +354,8 @@ const SerieScreen = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
+
+      {/* Top Bar de la página */}
       <View style={styles.top_bar} >
         <View style={styles.top_bar_left} >
           <ArrowLeft onPress={() => {
@@ -355,7 +363,7 @@ const SerieScreen = ({ navigation, route }) => {
           }} />
         </View>
         <View style={styles.top_bar_right} >
-          {/* <Gear /> */}
+          {/* Si el usuario es dueño de la serie o el usuario es admin puede editar o añadir capitulos a la serie */}
           {serieData.ownerId === user.id || user.admin ?
             <>
               <Plus onPress={() => {

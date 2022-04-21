@@ -1,8 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState, useContext } from 'react'
 import styles from '../sass/imageSelector.sass';
-// import ImagesPicker from '../components/ImagesPicker';
-// import * as ImagePicker from 'expo-image-picker';
+
 
 import * as ImageManipulator from 'expo-image-manipulator';
 import ImageBrowser from '../components/TestMultiple/ImageBrowser';
@@ -11,11 +10,9 @@ import { Context } from '../controllers/context';
 
 const ImageSelectorScreen = ({ navigation, route }) => {
 
-    const { setMsg } = useContext(Context)
 
-    const [count, setCount] = useState(0)
-    const [upload, setUpload] = useState(null)
-
+    // Funciones nativas del componente
+    // - Compresor de imagen
     const processImageAsync = async (uri) => {
         const file = await ImageManipulator.manipulateAsync(
             uri,
@@ -24,7 +21,7 @@ const ImageSelectorScreen = ({ navigation, route }) => {
         );
         return file;
     };
-
+    // - Callback para almacenar cada imagen seleccionada en una variable
     const imageCallback = (callback) => {
         callback.then(async (photos) => {
             const cPhotos = [];
@@ -38,17 +35,23 @@ const ImageSelectorScreen = ({ navigation, route }) => {
                 })
                 num++
             }
-            // navigation.navigate('Main', { photos: cPhotos });
             setUpload(cPhotos)
-            // console.log(cPhotos);
-            // console.log('\\\\\\\\\\\\');
         })
             .catch((e) => console.log(e));
     }
 
+    // Extraer de context
+    const { setMsg } = useContext(Context)
+
+    // Contador de imagenes seleccioandas
+    const [count, setCount] = useState(0)
+
+    // Estado con todas las imagenes seleccionadas
+    const [upload, setUpload] = useState(null)
+
+
+    // funcion para subir imagenes al State
     const onChangeImage = (num, onSubmit) => {
-        // console.log(onSubmit());
-        // console.log('//////////');
         setCount(num)
         if (num > 0) {
             setUpload(onSubmit)
@@ -58,11 +61,16 @@ const ImageSelectorScreen = ({ navigation, route }) => {
     }
 
 
+    // Funcion de btn para enviar las imagenes seleccionadas a la pagina correspondiente
     const done = () => {
+
+        // Si uploads es undefined , las imagenes o se estan subiendo o no se han subido
         if (upload !== undefined) {
             if (route.params.amount == upload.length) {
                 navigation.navigate(route.params.goTo, { upload })
             }
+
+            // Lanza error
         } else {
             setMsg({
                 text: 'Las imagenes se estan almacenando, intente nuevamente en unos segundos',
@@ -76,18 +84,17 @@ const ImageSelectorScreen = ({ navigation, route }) => {
         <View style={{ flex: 1 }} >
             <Msg />
             <View style={styles.header} >
+                {/* TopBar */}
                 <Text style={{ color: "#eee" }} >Imagenes seleccionadas {count}</Text>
                 <TouchableOpacity style={styles.header_done} onPress={done} >
                     <Text style={{ color: "#eee" }} >Listo</Text>
                 </TouchableOpacity>
             </View>
+
+            {/* Componente Image Browser */}
             <View style={styles.image_display} >
                 <ImageBrowser
                     max={route.params.amount}
-                    // onChange={(num, onSubmit) => {
-                    //     console.log(num)
-                    //     console.log(onSubmit())
-                    // }}
                     onChange={onChangeImage}
                     callback={imageCallback}
 
