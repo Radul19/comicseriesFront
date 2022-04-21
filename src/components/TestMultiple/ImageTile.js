@@ -6,6 +6,8 @@ import {
   View,
 } from 'react-native';
 
+// Componente nativo de Expo-Images-Picker
+
 const { width } = Dimensions.get('window');
 
 export class ImageTile extends React.PureComponent {
@@ -32,28 +34,5 @@ export class ImageTile extends React.PureComponent {
   }
 }
 
-// const ImageTile = () => {
-//   const { item, index, selected, selectImage, selectedItemNumber, renderSelectedComponent, renderExtraComponent } = this.props;
-//   if (!item) return null;
-//   return (
-//     <TouchableHighlight
-//       style={{ opacity: selected ? 0.5 : 1 }}
-//       underlayColor='transparent'
-//       onPress={() => selectImage(index)} >
-//       <View style={{ position: 'relative' }}>
-//         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//           <ImageBackground
-//             style={{ width: width / 4, height: width / 4 }}
-//             source={{ uri: item.uri }} >
-//             {selected && renderSelectedComponent && renderSelectedComponent(selectedItemNumber)}
-//             {renderExtraComponent && renderExtraComponent(item)}
-//           </ImageBackground>
-//         </View>
-//       </View>
-//     </TouchableHighlight>
-//   )
-// }
 
 export default ImageTile
-
-// export default ImageTile;

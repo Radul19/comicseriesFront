@@ -5,6 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Context } from '../controllers/context';
 
 
+/* Todos los icons son iguales, pueden o no tener:
+    -- onPress: es la funcion que ejecutan al ser presionados, y si no tienen o no hacen nada, o tienen una por defecto
+    -- color: es el color del icono
+    -- style: si se quieren aplicar estilos especificos al componente
+*/
 export const ArrowLeft = ({ onPress }) => {
     const navigation = useNavigation()
     return (

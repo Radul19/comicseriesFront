@@ -13,7 +13,6 @@ export const Msg = () => {
     /// Funcion para ocultar el mensaje
     const hide = () => {
         setMsg({ ...msg, display: false })
-        // console.log(msg)
     }
 
     return (
