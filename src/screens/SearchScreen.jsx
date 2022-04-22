@@ -14,7 +14,7 @@ const thumbUri = "https://res.cloudinary.com/comicseries/image/upload/v164982789
 
 
 // Componente
-export default function SearchScreen({ navigation }) {
+export default function SearchScreen({ navigation, route }) {
 
     // Estado con el input de la SearchBar
     const [input, setInput] = useState('')
@@ -32,12 +32,19 @@ export default function SearchScreen({ navigation }) {
         // Se hace una funcion async 'fantasma' para poder ejecutar peticiones fetch y buscar datos en la BD
         (async () => {
             // Buscar series mediante el texto del input
-            const res = await searchSeries(input)
+            let res
+            if (input === "") {
+                res = await searchSeries("_")
+            } else {
+                res = await searchSeries(input)
+            }
             if (res.status === 200) {
+                console.log(res.data.data);
                 // Si se encuentran series insertarlas en el useState
                 setSeriesData(res.data.data)
             } else {
 
+                console.log("no");
                 // -- Lanzar un mensaje de error si no se encuentra serie, pienso que es innecesario y lo comenté
 
                 // setMsg({
@@ -70,7 +77,7 @@ export default function SearchScreen({ navigation }) {
                 // })
             }
         })()
-    }, [])
+    }, [route])
 
 
 
@@ -100,7 +107,7 @@ export default function SearchScreen({ navigation }) {
             </View>
 
 
-            <TextInput onChange={setInput} value={input} placeholder='Search something...' style={styles.search_bar} />
+            <TextInput onChangeText={setInput} value={input} placeholder='Search something...' style={styles.search_bar} />
             <Text style={styles.result_text} >Results: </Text>
 
             {/* Componente con los resultados de busqueda */}

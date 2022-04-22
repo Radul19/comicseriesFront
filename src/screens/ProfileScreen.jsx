@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, Modal } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import styles from '../sass/profileScreen.sass';
-import manga from '../assets/manga.png'
-import profile from '../assets/Pumpkin.png'
+
 
 import { SerieCard, CommentCard } from '../components/Card'
 
@@ -75,21 +74,20 @@ const ProfileScreen = ({ navigation, route }) => {
 
         // Si se actualizo correctamente
         if (res.status === 200) {
-
+            const picture = res.data
             // Desactiva la pantalla de carga
             setLoad(false)
 
             // Actualiza el username del usuario en el Context
-            setUser({ ...user, username: editData.username })
+            setUser({ ...user, username: editData.username, picture })
 
             // Actualiza los datos del usuario
             setProfileData({
                 ...profileData,
-                useData: { ...editData }
+                useData: { ...editData, picture }
             })
 
-            // Actualiza los datos del estado para editar los datos
-            setEditData({ ...editData, picture: res.data })
+            setEditData({ ...editData, picture })
 
             // Mensaje de exito
             setMsg({
@@ -105,7 +103,7 @@ const ProfileScreen = ({ navigation, route }) => {
         } else {
             setLoad(false)
             setMsg({
-                text: res.data.msg,
+                text: 'Error idk ',
                 display: true,
                 type: false,
             })
@@ -299,9 +297,11 @@ const ProfileScreen = ({ navigation, route }) => {
                     }
 
                     {/* Si el usuario loggeado es dueño del perfil o es admin y ninguno de los campos de edicion estan vacios, muestra los botones para editar perfil */}
-                    {profileData.userData.id === user.id || user.admin && (user.username !== editData.username || editData.picture !== profileData.userData.picture) ?
+                    {(profileData.userData.id === user.id || user.admin) && (user.username !== editData.username || editData.picture !== profileData.userData.picture) ?
                         <View style={styles.edit_container} >
-                            <TouchableOpacity style={styles.btn_edit} onPress={btnEditProfile}  ><Text style={{ color: '#eee' }}  >Editar</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.btn_edit} onPress={
+                                () => { btnEditProfile() }
+                            }  ><Text style={{ color: '#eee' }}  >Editar</Text></TouchableOpacity>
                             <TouchableOpacity style={styles.btn_edit_cancel}
                                 onPress={() => {
                                     setEditData({

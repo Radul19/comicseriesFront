@@ -173,12 +173,6 @@ const CapScreen = ({ navigation, route }) => {
                     <Text style={{ fontSize: 16, color: '#eee' }} >Capitulo {`${JSON.stringify(capData.cap)}`}</Text>
                 </View>
                 <View style={styles.top_bar_right} >
-                    {user.id !== '@guest' || user.admin ?
-                        <Star fill={star} onPress={() => {
-                            console.log(capData)
-                            setStar(!star)
-                        }} />
-                        : null}
                     <ShareIcon onPress={onShare} />
                 </View>
             </View>

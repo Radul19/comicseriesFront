@@ -397,9 +397,14 @@ const SerieScreen = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => { setScreenToggle(true) }} style={styles.top_scrollbar_title_box_left} >
               <Text style={{ color: '#eee' }} >Lista de Capitulos</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setScreenToggle(false) }} style={styles.top_scrollbar_title_box_right} >
-              <Text style={{ color: '#eee' }} >Comentarios</Text>
-            </TouchableOpacity>
+            {
+              serieData.caps.length > 0 ?
+                <TouchableOpacity onPress={() => { setScreenToggle(false) }} style={styles.top_scrollbar_title_box_right} >
+                  <Text style={{ color: '#eee' }} >Comentarios</Text>
+                </TouchableOpacity>
+
+                : null
+            }
           </View>
           <View style={[styles.space, { backgroundColor: (screenToggle ? '#b55829' : '#274861') }]} ></View>
         </View>
@@ -416,7 +421,7 @@ const SerieScreen = ({ navigation, route }) => {
             // HERE COMES THE COMMENTS
             <View style={styles.top_scrollbar} >
               <CapCard item={serieData.caps[commentCapIndex]} cap={commentCapIndex + 1} set={setScreenToggle} valueSet={true} hide={true} />
-              {serieData.ownerId === user.id || user.admin ?
+              {user.id !== '@guest' ?
                 <View style={[styles.comment_input, { borderBottomColor: '#aa4c00', borderBottomWidth: 2 }]}>
 
                   <TextInput placeholder='Escribir comentario...' style={styles.input} onChangeText={setCommentInput} value={commentInput} />

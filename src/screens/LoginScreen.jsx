@@ -123,6 +123,7 @@ export default function LoginScreen({ navigation }) {
           placeholder='Username' style={[styles.input, styles.username]} ></TextInput>
         <TextInput
           value={inputs.password}
+          secureTextEntry={true}
           onChangeText={(text) => inputChange('password', text)}
           placeholder='Password' style={[styles.input, styles.password]} ></TextInput>
         {/* <View style={styles.subcontainer} ></View> */}

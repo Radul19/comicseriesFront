@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './src/screens/LoginScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchScreen from './src/screens/SearchScreen';
-import NotificationScreen from './src/screens/NotificationScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import SerieScreen from './src/screens/SerieScreen';
 import CapScreen from './src/screens/CapScreen';
@@ -66,8 +64,6 @@ export default function App() {
         >
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Search" component={SearchScreen} />
-          {/* Se elimino la pantalla de notificaciones por falta de tiempo */}
-          <Stack.Screen name="Notify" component={NotificationScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Serie" component={SerieScreen} />
           <Stack.Screen name="Cap" component={CapScreen} />

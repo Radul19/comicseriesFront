@@ -17,7 +17,7 @@ export default function ResultCards({ data }) {
         numColumns={2}
         data={data}
         renderItem={({ item }) => <Card item={item} navigation={navigation} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.title}
         columnWrapperStyle={{ flex: 1, justifyContent: "space-around" }}
       />
     </View>

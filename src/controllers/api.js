@@ -168,7 +168,7 @@ export const updateProfile = async (data) => {
     await fetch(`${url}updateProfile`, {
         method: 'POST',
         body: formData
-    })
+    }).then(res => res.json())
         .then(res => {
             response = res
         }).catch(err => {
