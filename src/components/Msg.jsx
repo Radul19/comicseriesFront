@@ -7,10 +7,8 @@ import { Check, Cross } from './Icons';
 /// Componente Message
 export const Msg = () => {
 
-    /// Extraer del UserContext
     const { msg, setMsg } = useContext(Context)
 
-    /// Funcion para ocultar el mensaje
     const hide = () => {
         setMsg({ ...msg, display: false })
     }

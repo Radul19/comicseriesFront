@@ -5,7 +5,7 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-// Extraer Componente
+
 import { Star, ShareIcon, ArrowLeft, ArrowRight } from '../components/Icons'
 import { Context } from '../controllers/context';
 import { getCap } from '../controllers/api';
@@ -15,13 +15,13 @@ import { Msg } from '../components/Msg';
 
 const thumbUri = "https://res.cloudinary.com/comicseries/image/upload/v1649827898/imgThumb_svogrq.png"
 
-// Componente principal
+
 const CapScreen = ({ navigation, route }) => {
 
-    // Extraer de Contex
+
     const { user, setLoad, setMsg } = useContext(Context)
 
-    // Btn de compartir, solo el mensaje que se envia a cualquier red social o app, y se incluye el URL de la imagen del capitulo que se esta viendo
+
     const onShare = async () => {
         try {
             const result = await Share.share({
@@ -29,22 +29,22 @@ const CapScreen = ({ navigation, route }) => {
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
-                    // shared with activity type of result.activityType
+
                 } else {
-                    // shared
+
                 }
             } else if (result.action === Share.dismissedAction) {
-                // dismissed
+
             }
         } catch (error) {
             alert(error.message);
         }
     };
 
-    // Estado para alternar la estrella pero sin uso
+
     const [star, setStar] = useState(false)
 
-    // Datos del capitulo
+
     const [capData, setCapData] = useState({
         cap: 0,
         title: '',
@@ -56,38 +56,38 @@ const CapScreen = ({ navigation, route }) => {
         comments: {},
     })
 
-    // Index de la imagen del capitulo
+
     const [index, setIndex] = useState(0)
 
-    // useEffect que se ejecuta cada que cambia la ruta
+
     useEffect(() => {
 
-        // Funcion fantasma async
+
         (async () => {
 
-            // Si se encuentra un ID de serie y Cap en el Route.Params continua
+
             if (route.params.serieId !== undefined && route.params.cap !== undefined) {
-                // Pantalla de carga
+
                 setLoad(true)
 
-                // Pide el capitulo con el ID y el numero del Cap
+
                 const res = await getCap(route.params.serieId, route.params.cap)
 
-                // Si se encontró el capitulo
+
                 if (res.status === 200) {
-                    // Desactivar la pantalla de carga
+
                     setLoad(false)
 
-                    // Coloca el index de la pagina
+
                     setIndex(route.params.index)
 
-                    // Almacena el capitulo en el LocalStorage
+
                     await storeCapMemory(index + 1)
 
 
                     setCapData({ images: res.data.images, cap: route.params.cap, title: res.data.title })
 
-                    // Caso contrario
+
                 } else {
                     setLoad(false)
                     setMsg({
@@ -97,7 +97,7 @@ const CapScreen = ({ navigation, route }) => {
                     })
                 }
 
-                // Si no , lanza error
+
             } else {
                 setLoad(false)
                 setMsg({
@@ -114,7 +114,7 @@ const CapScreen = ({ navigation, route }) => {
     }, [route])
 
 
-    // Funcion/Boton para cambiar de pagina
+
     const nextPage = async () => {
         if (capData.images.length > index + 1) {
             await storeCapMemory(index + 1)
@@ -122,7 +122,7 @@ const CapScreen = ({ navigation, route }) => {
         }
     }
 
-    // Funcion/Boton para cambiar de pagina
+
     const prevPage = async () => {
         if (index > 0) {
             await storeCapMemory(index - 1)
@@ -133,16 +133,16 @@ const CapScreen = ({ navigation, route }) => {
                     console.log(value);
                 }
             } catch (e) {
-                // error reading value
+
             }
         }
     }
 
-    // Funcion para almacenar en el LocalStorage el capitulo en el que se quedó
-    // -- Tomar en cuenta que el usuario que se registrará sera @guest en caso de ser invitado
+
+
     const storeCapMemory = async (page) => {
         try {
-            // Almacena la informacion como String
+
             const jsonValue = JSON.stringify({ serieId: route.params.serieId, cap: route.params.cap, index: page })
             await AsyncStorage.setItem(`@user:${user.id}_capMemory`, jsonValue)
         } catch (e) {
@@ -150,14 +150,14 @@ const CapScreen = ({ navigation, route }) => {
         }
     }
 
-    // Si se sale del capitulo de forma normal, la info en el LocalStorage queda vacio
+
     const cleanCapMemory = async () => {
         try {
             const jsonValue = JSON.stringify({ serieId: '', cap: '', index: '' })
             await AsyncStorage.setItem(`@user:${user.id}_capMemory`, jsonValue)
             navigation.navigate('Serie', { id: route.params.serieId })
         } catch (e) {
-            // saving error
+
         }
     }
 

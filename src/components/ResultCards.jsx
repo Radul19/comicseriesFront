@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function ResultCards({ data }) {
 
-  // useNavigation nos permite acceder a la navegacion de ReactNavigation sin ser un componente principal
   const navigation = useNavigation()
 
   return (

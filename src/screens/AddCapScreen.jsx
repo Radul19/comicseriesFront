@@ -1,7 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, FlatList, Image } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 
-// Extraer componentes
+
 import styles from '../sass/addCapScreen.sass';
 import { ArrowLeft } from '../components/Icons'
 import { Context } from '../controllers/context';
@@ -9,29 +9,27 @@ import { Msg } from '../components/Msg';
 import { uploadCaps, editCap } from '../controllers/api';
 import Load from '../components/Load'
 
-// Componente principal
+
 const AddCapScreen = ({ navigation, route }) => {
 
-
-    // Extraer datos del Context
     const { setMsg, setLoad } = useContext(Context)
 
 
-    // Estado para Imagenes
+
     const [images, setImages] = useState([])
-    // Estado para el numero del capitulo
+
     const [capNum, setCapNum] = useState('0')
-    // Estado para Cantidad de imagenes que tendra el capitulo
+
     const [amount, setAmount] = useState('3')
-    // Id de la serie
+
     const [id, setId] = useState('')
-    // Estado para evaluar si el cap se esta editando o no
+
     const [edit, setEdit] = useState(false)
 
-    // Funcion regex para solo aceptar numeros en el input de Cantidad de capitulos
+
     const regexNumber = /^[0-9]*$/
 
-    // funcion para cambiar la cantidad de capitulos y evaluar el Regex
+
     const changeAmount = (text) => {
         const num = parseInt(text)
         if (regexNumber.test(text)) {
@@ -45,11 +43,10 @@ const AddCapScreen = ({ navigation, route }) => {
         }
     }
 
-    // Funcion para ir a la pantalla de seleccion de imagenes
     const selectImages = () => {
         const num = parseInt(amount)
         if (num >= 1 && num <= 100) {
-            // setImages([])
+
             navigation.navigate('ImageSelector', { amount, goTo: 'AddCap' })
         } else {
             setMsg({
@@ -60,7 +57,6 @@ const AddCapScreen = ({ navigation, route }) => {
         }
     }
 
-    // useEffect para definir los estados dependiendo si existe o no los parametros en la ruta
     useEffect(() => {
 
         if (route.params.cap !== undefined) {
@@ -79,25 +75,25 @@ const AddCapScreen = ({ navigation, route }) => {
     }, [route])
 
 
-    // Boton para subir capitulos
+
     const btnUploadCap = async () => {
 
-        // Mientras la cantidad de imagenes no sean iguales a 0
+
         if (images.length > 0) {
 
-            // Activar pantalla de carga
+
             setLoad(true)
 
-            // Si el capitulo se esta editanto
+
             if (edit) {
 
-                // Peticion para editar
+
                 const res = await editCap(id, images, capNum)
 
-                // Si todo salio bien
+
                 if (res.status === 200) {
 
-                    // Desactivar pantalla de carga con mensaje y redireccionar a la serie
+
                     setLoad(false)
                     setMsg({
                         text: 'Capitulo editado satisfacctoriamente!',
@@ -106,7 +102,7 @@ const AddCapScreen = ({ navigation, route }) => {
                     })
                     navigation.navigate('Serie', { id })
 
-                    // Caso de error
+
                 } else {
                     setLoad(false)
                     setMsg({
@@ -116,13 +112,13 @@ const AddCapScreen = ({ navigation, route }) => {
                     })
                 }
 
-                // Si el capitulo se sube por primera vez
+
             } else {
 
-                // Peticion para subir cap
+
                 const res = await uploadCaps(id, images)
 
-                // Si todo salio bien
+
                 if (res.status === 200) {
                     setLoad(false)
                     setMsg({
@@ -132,7 +128,7 @@ const AddCapScreen = ({ navigation, route }) => {
                     })
                     navigation.navigate('Serie', { id })
 
-                    // En caso de error
+
                 } else {
                     setLoad(false)
                     setMsg({
@@ -152,8 +148,6 @@ const AddCapScreen = ({ navigation, route }) => {
             <Load />
             <View style={styles.top_bar} >
                 <View style={styles.back}>
-
-                    {/* Componente arrowLeft para volver a la serie correspondiente del capitulo */}
                     <ArrowLeft onPress={() => {
                         setEdit(false)
                         navigation.navigate('Serie', { id })
